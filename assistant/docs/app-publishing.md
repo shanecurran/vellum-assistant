@@ -97,6 +97,10 @@ cloud-metadata address. A self-hosted daemon runs on the user's own machine, so
 This matches the rule on custom inference base URLs
 (`runtime/routes/inference-provider-connection-routes.ts`).
 
+Redirects are not followed. The check runs against the configured endpoint, so
+following a 3xx would let that endpoint hand the request to an address the
+check would have refused; a redirect is reported as an ordinary failure.
+
 ## Adding a provider
 
 1. Implement `PublishProvider` in `src/services/publish/<name>-provider.ts`.

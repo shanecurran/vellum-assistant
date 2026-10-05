@@ -129,6 +129,21 @@ describe("webhookPublishProvider.deploy", () => {
     ).rejects.toThrow("unexpected body");
   });
 
+  test("does not follow a redirect off the configured endpoint", async () => {
+    const { calls } = stubFetch((request) => {
+      expect(request.redirect).toBe("manual");
+      return new Response(null, {
+        status: 302,
+        headers: { location: "http://169.254.169.254/latest/meta-data/" },
+      });
+    });
+
+    await expect(
+      webhookPublishProvider.deploy("<html/>", META, null),
+    ).rejects.toThrow("Publish webhook failed (302)");
+    expect(calls).toHaveLength(1);
+  });
+
   test("names the config key when no url is configured", async () => {
     webhook = { ...webhook, url: "" };
     const { calls } = stubFetch(() => Response.json({}));

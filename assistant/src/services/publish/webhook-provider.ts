@@ -103,6 +103,14 @@ function headers(token: string | null): Record<string, string> {
   return result;
 }
 
+/**
+ * Redirects are not followed. The address check above runs against the
+ * configured endpoint, and following a redirect would let that endpoint hand
+ * the request to an address the check would have refused. A 3xx therefore
+ * falls through to the ordinary non-2xx error with its status attached.
+ */
+const REDIRECT_POLICY = "manual" as const;
+
 async function readErrorBody(response: Response): Promise<string> {
   try {
     return (await response.text()).slice(0, MAX_ERROR_BODY_CHARS);
@@ -143,6 +151,7 @@ export const webhookPublishProvider: PublishProvider = {
         previousDeploymentId: meta.previousDeploymentId ?? null,
         html,
       }),
+      redirect: REDIRECT_POLICY,
       signal: AbortSignal.timeout(config.timeoutMs),
     });
 
@@ -186,6 +195,7 @@ export const webhookPublishProvider: PublishProvider = {
         slug: meta.slug,
         deploymentId: meta.previousDeploymentId ?? null,
       }),
+      redirect: REDIRECT_POLICY,
       signal: AbortSignal.timeout(config.timeoutMs),
     });
 
