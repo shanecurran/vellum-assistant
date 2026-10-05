@@ -1,9 +1,9 @@
 /**
  * Route handlers for publishing/unpublishing apps.
  *
- * POST /v1/apps/:id/publish       — deploy app HTML through the configured provider
- * POST /v1/apps/:id/unpublish     — take the deployment down and mark it inactive
- * GET  /v1/apps/:id/publish-status — return current deployment state
+ * POST /v1/apps/:id/publish        : deploy app HTML through the configured provider
+ * POST /v1/apps/:id/unpublish      : take the deployment down and mark it inactive
+ * GET  /v1/apps/:id/publish-status : return current deployment state
  *
  * Which provider runs is `apps.publish.provider`; every response names it so
  * clients can label the affordance without knowing the provider set.
@@ -41,8 +41,8 @@ import type { RouteDefinition, RouteHandlerArgs } from "./types.js";
 const log = getLogger("publish-routes");
 
 // Optional on the wire, always sent by these handlers: a web bundle newer than
-// the assistant it is talking to must be able to tell "this daemon has no
-// provider concept" (Vercel only) from "this daemon named a provider".
+// the assistant it is talking to must be able to tell an assistant that names
+// no provider (Vercel only) from one that names a provider.
 const providerResponseFields = {
   provider: z
     .string()

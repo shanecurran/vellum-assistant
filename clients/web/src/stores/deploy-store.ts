@@ -3,7 +3,7 @@
  *
  * Owns the in-flight UI state for two operations:
  * - **Share** — export an app to a `.vellum` bundle.
- * - **Deploy** — publish an app through whichever target the assistant is
+ * - **Deploy**: publish an app through whichever target the assistant is
  *   configured for (with an intermediate token dialog when that target is
  *   Vercel and no Vercel token is stored yet).
  *
@@ -165,9 +165,9 @@ const useDeployStoreBase = create<DeployStore>()((set, get) => ({
     }
     set({ isDeploying: true });
     try {
-      // No credential pre-flight: the publish route answers a missing
-      // credential before it compiles the app, and its answer names the
-      // provider, which a Vercel-only pre-flight could not.
+      // The publish route answers a missing credential before it compiles the
+      // app, so asking it is the cheap way to learn both whether a credential
+      // is needed and which provider needs it.
       const result = await publishApp(assistantId, appId);
       if (handlePublishResult(result).needsVercelToken) {
         set({

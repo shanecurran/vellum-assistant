@@ -8,9 +8,9 @@
  * into the store. See `docs/STATE_MANAGEMENT.md`.
  *
  * Surfaces that offer a deploy affordance (the app viewer's nav bar, the
- * library card's actions menu) call this so they can name the target and hand
- * back the link instead of offering a first-time deploy for an app that
- * already has one.
+ * library card's actions menu) call this so an app that already has a
+ * deployment names its target and hands the link back, and one that does not
+ * offers a first-time deploy.
  */
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";

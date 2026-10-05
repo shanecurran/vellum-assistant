@@ -40,10 +40,9 @@ export interface AppNavBarProps {
   onDeploy?: () => void;
   isDeploying?: boolean;
   /**
-   * Live URL of the app's active deployment, when it has one. Turns the
-   * deploy affordance into "Deployed to <provider>" (which hands back the
-   * link) plus an explicit Redeploy, instead of offering a first-time deploy
-   * for an app that is already published.
+   * Live URL of the app's active deployment. Set, the deploy affordance is
+   * "Deployed to <provider>" (which hands back the link) plus an explicit
+   * Redeploy; unset, it offers a first-time deploy.
    */
   deployedUrl?: string | null;
   /**

@@ -3,8 +3,8 @@
  *
  * An app is published by compiling it to a single self-contained HTML
  * document and handing that document to a provider, which returns the public
- * URL it now lives at plus an opaque deployment id the next deploy and the
- * unpublish are keyed on.
+ * URL the app is served from plus an opaque deployment id the next deploy and
+ * the unpublish are keyed on.
  */
 
 import type { PublishProviderId } from "../../config/schemas/apps.js";

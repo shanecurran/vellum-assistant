@@ -1,9 +1,8 @@
 /**
  * Guards over the `apps.publish` config block.
  *
- * Two contracts: a workspace that says nothing publishes to Vercel exactly as
- * it did before the block existed, and nothing a user can write into the block
- * can fail the whole config load.
+ * Two contracts: a workspace that configures nothing publishes to Vercel, and
+ * nothing a user can write into the block can fail the whole config load.
  */
 
 import { describe, expect, test } from "bun:test";

@@ -1,9 +1,9 @@
 # App publishing
 
 Publishing an app compiles it to a single self-contained HTML document and
-hands that document to a **publish provider**, which returns the public URL it
-now lives at plus an opaque deployment id. Vercel is the shipped default; a
-self-hoster can point publishing at their own platform instead.
+hands that document to a **publish provider**, which returns the public URL the
+app is served from plus an opaque deployment id. Vercel is the shipped default;
+a self-hoster can point publishing at their own platform.
 
 The code lives in [`src/services/publish/`](../src/services/publish/):
 `types.ts` is the contract, `registry.ts` selects the provider and wraps every
@@ -33,7 +33,7 @@ unknown `provider` or a mistyped `timeoutMs` degrades to Vercel / 60s instead of
 quarantining `config.json`.
 
 Credentials never live in config. Each provider names the credential-store
-entry it authenticates with, and the daemon reads it through the credential
+entry it authenticates with, and the assistant reads it through the credential
 broker so the plaintext never reaches the publish code.
 
 | Provider  | Credential              | Required                                 |
@@ -52,9 +52,9 @@ assistant credentials set --service publish_webhook --field token <value> \
 ## The webhook provider
 
 `webhook` POSTs JSON to `apps.publish.webhook.url`. It is the escape hatch for
-anything the daemon has no first-party provider for (Coolify, Dokku, Fly,
+anything the assistant has no first-party provider for (Coolify, Dokku, Fly,
 Cloudflare, a plain static host): write a small shim that accepts this payload
-and the daemon can target it.
+and the assistant can target it.
 
 Request:
 
@@ -79,8 +79,8 @@ The shim answers `2xx` with:
 ```
 
 Anything else (a non-2xx, a body that is not JSON, a body missing either field)
-fails the publish and the daemon reports the status and a truncated body back
-to the client.
+fails the publish, and the assistant reports the status and a truncated body
+back to the client.
 
 Unpublishing sends the same shape minus `html`, with the live `deploymentId`,
 to `apps.publish.webhook.unpublishUrl` (falling back to `url`) using
@@ -91,9 +91,9 @@ is the worse of the two divergences.
 ### Outbound address policy
 
 The endpoint is validated before every request: it must be `http`/`https`, and
-on a platform-hosted daemon it must not resolve to a private, loopback, or
-cloud-metadata address. A self-hosted daemon runs on the user's own machine, so
-`http://localhost:8080/publish` is an expected target there and is allowed.
+on a platform-hosted assistant it must not resolve to a private, loopback, or
+cloud-metadata address. A self-hosted assistant runs on the user's own machine,
+so `http://localhost:8080/publish` is an expected target there and is allowed.
 This matches the rule on custom inference base URLs
 (`runtime/routes/inference-provider-connection-routes.ts`).
 
